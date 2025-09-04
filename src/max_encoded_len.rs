@@ -15,7 +15,7 @@
 
 //! `trait MaxEncodedLen` bounds the maximum encoded length of items.
 
-use crate::{alloc::boxed::Box, Compact, Encode};
+use crate::{alloc::boxed::Box, Compact, Encode, CompactAs};
 use core::{
 	marker::PhantomData,
 	mem,

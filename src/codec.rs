@@ -48,7 +48,8 @@ use crate::{
 	DecodeFinished, Error,
 };
 
-pub(crate) const INITIAL_PREALLOCATION: usize = 16 * 1024;
+// Increased from 16KB to 256KB for complex Substrate types
+pub(crate) const INITIAL_PREALLOCATION: usize = 256 * 1024;
 const A_BILLION: u32 = 1_000_000_000;
 
 /// Trait that allows reading of data into a slice.
