@@ -1,4 +1,8 @@
-# Parity SCALE Codec
+# Parity SCALE Codec - Paraxiom Fork
+
+> **Fork Note**: This is a fork for [QuantumHarmony](https://github.com/Paraxiom/quantumharmony) with increased preallocation buffer (256KB vs 16KB) for complex post-quantum signature types.
+
+---
 
 Rust implementation of the SCALE (Simple Concatenated Aggregate Little-Endian) data format
 for types used in the Parity Substrate framework.
