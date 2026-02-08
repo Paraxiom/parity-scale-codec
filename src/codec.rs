@@ -79,7 +79,7 @@ pub trait Input {
 	/// such as `Vec` or `Box`. Currently, all such types are
 	/// allocated on the heap.
 	fn descend_ref(&mut self) -> Result<(), Error> {
-		Ok(())
+		Ok(()) // Default: no depth tracking; overridden by DepthTrackingInput
 	}
 
 	/// Ascend to previous structure level when decoding.
@@ -94,7 +94,7 @@ pub trait Input {
 	/// also we don't take alignment or memory layouts into account.
 	/// But we should always track the memory used by the decoded data inside the type.
 	fn on_before_alloc_mem(&mut self, _size: usize) -> Result<(), Error> {
-		Ok(())
+		Ok(()) // Default: no memory tracking; overridden by MemTrackingInput
 	}
 
 	/// !INTERNAL USE ONLY!
@@ -551,7 +551,7 @@ impl<T> WrapperTypeDecode for Box<T> {
 		//
 		// The explicit types here are written out for clarity.
 		//
-		// TODO: Use `Box::new_uninit` once that's stable.
+		// NOTE(upstream): Use `Box::new_uninit` once that's stable.
 		let layout = core::alloc::Layout::new::<MaybeUninit<T>>();
 
 		input.on_before_alloc_mem(layout.size())?;
@@ -580,7 +580,7 @@ impl<T> WrapperTypeDecode for Box<T> {
 
 		// Decoding succeeded, so let's get rid of `MaybeUninit`.
 		//
-		// TODO: Use `Box::assume_init` once that's stable.
+		// NOTE(upstream): Use `Box::assume_init` once that's stable.
 		let ptr: *mut MaybeUninit<T> = Box::into_raw(boxed);
 		let ptr: *mut T = ptr.cast();
 
@@ -602,7 +602,7 @@ impl<T> WrapperTypeDecode for Rc<T> {
 	where
 		Self::Wrapped: Decode,
 	{
-		// TODO: This is inefficient; use `Rc::new_uninit` once that's stable.
+		// NOTE(upstream): This is inefficient; use `Rc::new_uninit` once that's stable.
 		Box::<T>::decode(input).map(|output| output.into())
 	}
 }
@@ -618,7 +618,7 @@ impl<T> WrapperTypeDecode for Arc<T> {
 	where
 		Self::Wrapped: Decode,
 	{
-		// TODO: This is inefficient; use `Arc::new_uninit` once that's stable.
+		// NOTE(upstream): This is inefficient; use `Arc::new_uninit` once that's stable.
 		Box::<T>::decode(input).map(|output| output.into())
 	}
 }
@@ -941,8 +941,8 @@ impl<T: Decode, const N: usize> Decode for [T; N] {
 
 			let bytesize = calculate_array_bytesize::<T, N>();
 
-			// TODO: This is potentially slow; it'd be better if `Input` supported
-			//       reading directly into uninitialized memory.
+			// NOTE(upstream): This is potentially slow; it'd be better if `Input` supported
+			//                 reading directly into uninitialized memory.
 			//
 			// SAFETY: The pointer is valid and points to a memory `bytesize` bytes big.
 			unsafe {
@@ -985,8 +985,8 @@ impl<T: Decode, const N: usize> Decode for [T; N] {
 					return;
 				}
 
-				// TODO: Use `MaybeUninit::slice_assume_init_mut` + `core::ptr::drop_in_place`
-				//       once `slice_assume_init_mut` is stable.
+				// NOTE(upstream): Use `MaybeUninit::slice_assume_init_mut` + `core::ptr::drop_in_place`
+				//                 once `slice_assume_init_mut` is stable.
 				for item in &mut self.slice[..self.count] {
 					// SAFETY: Each time we've read a new element we incremented `count`,
 					//         and we only drop at most `count` elements here,
@@ -1386,7 +1386,7 @@ impl Encode for () {
 
 impl Decode for () {
 	fn decode<I: Input>(_: &mut I) -> Result<(), Error> {
-		Ok(())
+		Ok(()) // Unit type decodes without consuming any input
 	}
 }
 

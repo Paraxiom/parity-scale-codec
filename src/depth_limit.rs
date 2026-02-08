@@ -56,7 +56,7 @@ impl<I: Input> Input for DepthTrackingInput<'_, I> {
 		if self.depth > self.max_depth {
 			Err(DECODE_MAX_DEPTH_MSG.into())
 		} else {
-			Ok(())
+			Ok(()) // Depth within limits, decoding may proceed
 		}
 	}
 

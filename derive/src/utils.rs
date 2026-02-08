@@ -465,7 +465,7 @@ fn check_field_attribute(attr: &Attribute) -> syn::Result<()> {
 			elt => Err(syn::Error::new(elt.span(), field_error)),
 		}
 	} else {
-		Ok(())
+		Ok(()) // Non-codec attributes are valid and pass through without error
 	}
 }
 
@@ -493,7 +493,7 @@ fn check_variant_attribute(attr: &Attribute) -> syn::Result<()> {
 			elt => Err(syn::Error::new(elt.span(), variant_error)),
 		}
 	} else {
-		Ok(())
+		Ok(()) // Non-codec variant attributes are valid and pass through
 	}
 }
 
@@ -522,7 +522,7 @@ fn check_top_attribute(attr: &Attribute) -> syn::Result<()> {
 			elt => Err(syn::Error::new(elt.span(), top_error)),
 		}
 	} else {
-		Ok(())
+		Ok(()) // Non-codec top-level attributes are valid and pass through
 	}
 }
 

@@ -553,7 +553,7 @@ impl Decode for Compact<u32> {
 					return Err(U32_OUT_OF_RANGE.into());
 				}
 			},
-			_ => unreachable!(),
+			_ => panic!("prefix % 4 produced value outside 0..=3, which is impossible"),
 		}))
 	}
 }
@@ -611,7 +611,7 @@ impl Decode for Compact<u64> {
 					}
 				},
 			},
-			_ => unreachable!(),
+			_ => panic!("prefix % 4 produced value outside 0..=3, which is impossible"),
 		}))
 	}
 }
@@ -677,7 +677,7 @@ impl Decode for Compact<u128> {
 					}
 				},
 			},
-			_ => unreachable!(),
+			_ => panic!("prefix % 4 produced value outside 0..=3, which is impossible"),
 		}))
 	}
 }
