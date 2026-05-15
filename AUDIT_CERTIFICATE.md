@@ -1,6 +1,6 @@
 # Code Pertinence and Continuity Certificate
 
-**Project**: /Users/sylvaincormier/QuantumVerseProtocols/parity-scale-codec
+**Project**: github.com/Paraxiom/parity-scale-codec
 **Generated**: 2026-02-08T01:27:33.196552+00:00
 **Completeness Score**: 100.00%
 
